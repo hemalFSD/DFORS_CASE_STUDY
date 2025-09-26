@@ -1,0 +1,31 @@
+<div class="container mt-4">
+  <form #basicInfoForm="ngForm" (ngSubmit)="save(basicInfoForm)">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input id="name" [(ngModel)]="info!.name" name="name" class="form-control"
+          required maxlength="30"
+          [ngClass]="{'is-invalid': basicInfoForm.submitted && (hasInvalidChars(info!.name) || !info!.name || info!.name.length > 30)}" />
+        <div *ngIf="basicInfoForm.submitted && (!info!.name || info!.name.length > 30)" class="text-danger">Name is required (max 30 characters).</div>
+        <div *ngIf="basicInfoForm.submitted && hasInvalidChars(info!.name)" class="text-danger">Name cannot contain commas or special characters.</div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="dob" class="form-label">Date of Birth</label>
+        <input id="dob" [(ngModel)]="info!.dateOfBirth" name="dateOfBirth" class="form-control" required type="date"
+          [ngClass]="{'is-invalid': basicInfoForm.submitted && !isValidDate(info!.dateOfBirth)}" />
+        <div *ngIf="basicInfoForm.submitted && !isValidDate(info!.dateOfBirth)" class="text-danger">Enter a valid date (yyyy-mm-dd).</div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="location" class="form-label">Location</label>
+        <select id="location" [(ngModel)]="info!.location" name="location" class="form-control" required>
+          <option value="CA">CA</option>
+          <option value="MS">MS</option>
+        </select>
+        <div *ngIf="basicInfoForm.submitted && !isValidLocation(info!.location)" class="text-danger">Location must be CA or MS.</div>
+      </div>
+      <input type="hidden" [(ngModel)]="info!.id" name="id" />
+    </div>
+    <button type="submit" class="btn btn-success me-2">Save</button>
+    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+  </form>
+</div>
